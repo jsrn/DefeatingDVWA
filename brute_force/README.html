@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="1" data-basepath=".." data-revision="1399066431582">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="1" data-basepath=".." data-revision="1399066596452">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -180,7 +180,7 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_2">
+                    <section class="normal" id="section-gitbook_3">
                     
                         <h1 id="brute-force">Brute Force</h1>
 <p>This challenge focuses on brute-forcing a generic username/password log on panel. An initial attempt to log in with random details yields the response:</p>
@@ -206,14 +206,14 @@
 <p>Another case of non-existent input sanitisation.</p>
 <p>Attempting to log in with the username <code>admin;#</code> escapes the rest of the query and saves us the effort of having to brute force at all.</p>
 <h2 id="medium">Medium</h2>
-<pre><code class="lang-php"> <span class="hljs-comment">// Sanitise username input</span>
-    <span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">'username'</span> ];
-    <span class="hljs-variable">$user</span> = mysql_real_escape_string( <span class="hljs-variable">$user</span> );
+<pre><code class="lang-php"><span class="hljs-comment">// Sanitise username input</span>
+<span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">'username'</span> ];
+<span class="hljs-variable">$user</span> = mysql_real_escape_string( <span class="hljs-variable">$user</span> );
 
-    <span class="hljs-comment">// Sanitise password input</span>
-    <span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">'password'</span> ];
-    <span class="hljs-variable">$pass</span> = mysql_real_escape_string( <span class="hljs-variable">$pass</span> );
-    <span class="hljs-variable">$pass</span> = md5( <span class="hljs-variable">$pass</span> );
+<span class="hljs-comment">// Sanitise password input</span>
+<span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">'password'</span> ];
+<span class="hljs-variable">$pass</span> = mysql_real_escape_string( <span class="hljs-variable">$pass</span> );
+<span class="hljs-variable">$pass</span> = md5( <span class="hljs-variable">$pass</span> );
 </code></pre>
 <p>We&#39;re not so lucky this time! They&#39;ve fixed the SQL injection vulnerability by cleaning their inputs. However, using burpsuite for the brute force is still equally successful.</p>
 <h2 id="high">High</h2>
