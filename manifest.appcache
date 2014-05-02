@@ -1,10 +1,12 @@
 CACHE MANIFEST
-# Revision 1399066596453
+# Revision 1399069505739
 
 CACHE:
+brute_force/README.html
 index.html
 command_execution/README.html
-brute_force/README.html
+tips_and_tricks/README.html
+tips_and_tricks/burp_intruder.html
 gitbook/app.js
 gitbook/fonts/anonymouspro/400.woff
 gitbook/fonts/anonymouspro/400i.woff
