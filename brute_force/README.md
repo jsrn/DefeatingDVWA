@@ -60,4 +60,4 @@ We're not so lucky this time! They've fixed the SQL injection vulnerability by c
 
 ## High
 
-Under high security, DVWA adds an artificial delay of 3000s after each incorrect password. If you're lucky enough to have a target with a weak password, this still makes brute force more or less infeasible. You can escape this problem by using a tool that allows you to send requests in parallel. Sadly, the free edition of Burp does not.
+Under high security, DVWA adds an artificial delay of three seconds after each incorrect password. If you're lucky enough to have a target with a weak password, this still makes brute force more or less infeasible. You can escape this problem by using a tool that allows you to send requests in parallel. Sadly, the free edition of Burp does not.
