@@ -46,14 +46,14 @@ Attempting to log in with the username `admin;#` escapes the rest of the query a
 ## Medium
 
 ```php
- // Sanitise username input
-    $user = $_GET[ 'username' ];
-    $user = mysql_real_escape_string( $user );
+// Sanitise username input
+$user = $_GET[ 'username' ];
+$user = mysql_real_escape_string( $user );
 
-    // Sanitise password input
-    $pass = $_GET[ 'password' ];
-    $pass = mysql_real_escape_string( $pass );
-    $pass = md5( $pass );
+// Sanitise password input
+$pass = $_GET[ 'password' ];
+$pass = mysql_real_escape_string( $pass );
+$pass = md5( $pass );
 ```
 
 We're not so lucky this time! They've fixed the SQL injection vulnerability by cleaning their inputs. However, using burpsuite for the brute force is still equally successful.
