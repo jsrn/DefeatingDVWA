@@ -12,7 +12,7 @@ smithy:5f4dcc3b5aa765d61d8327deb882cf99
 
 ## The Lazy Way
 
-If you're lucky enough to find a site that's still using unsalted md5 **(in 2014? really?)** to store passwords, there's reasonable chance that somebody else has already cracked that hash.
+If you're lucky enough to find a site that's still using unsalted md5 *(in 2014? really?)* to store passwords, there's reasonable chance that somebody else has already cracked that hash.
 
 A lot of the time, if you have a bunch of hashes to crack, you can usually just Google it!
 
