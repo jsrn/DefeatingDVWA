@@ -12,7 +12,7 @@ For now we'll keep it simple. Try to log in with the username `admin` and passwo
 
 We'll keep it simple and attempt to brute force the password for the `admin` user.
 
-Remove all payload positions except for the `password` parameter in the GET request. On the payloads tab, under `Payload Options`, you can import your password list. I have provided one for this web app. You can find it [here](../files/passwords.txt).
+Remove all payload positions except for the `password` parameter in the GET request. On the payloads tab, under `Payload Options`, you can import your password list. I have provided one for this web app. You can find it [here](files/passwords.txt).
 
 Now that we've loaded our password list into Burp and set the payload position, selecting `Intruder -> Start attack` on the top menu will open the attack window and begin sending requests.
 
