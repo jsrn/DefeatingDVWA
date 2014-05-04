@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="1" data-basepath=".." data-revision="1399198289582">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="1" data-basepath=".." data-revision="1399200557647">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -232,12 +232,10 @@
 <p>Despite being a very well understood class of attack, SQL injection vulnerabilities are still alarmingly common.</p>
 <h2 id="low">Low</h2>
 <p>The relevant chunk from the source code of the low security SQLi challenge:</p>
-<pre><code class="lang-php"><span class="hljs-preprocessor">&lt;?php</span>    
-<span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'id'</span>];
+<pre><code class="lang-php"><span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'id'</span>];
 
 <span class="hljs-variable">$getid</span> = <span class="hljs-string">"SELECT first_name, last_name FROM users WHERE user_id = '$id'"</span>;
 <span class="hljs-variable">$result</span> = mysql_query(<span class="hljs-variable">$getid</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">'&lt;pre&gt;'</span> . mysql_error() . <span class="hljs-string">'&lt;/pre&gt;'</span> );
-<span class="hljs-preprocessor">?&gt;</span>
 </code></pre>
 <p>With no sanitisation on the value, it&#39;s pretty clear that <code>$id</code> is our point of injection.</p>
 <p>The first thing I want to do is get some information. We know for free that there&#39;s a table called <code>users</code> containing the columns <code>user_id</code>, <code>first_name</code> and <code>last_name</code>.</p>
@@ -273,7 +271,13 @@ gordonb:e99a18c428cb38d5f260853678922e03
 1337:8d3533d75ae2c3966d7e0d4fcc69216b
 pablo:0d107d09f5bbe40cade3de5c71e9e9b7
 smithy:5f4dcc3b5aa765d61d8327deb882cf99
+</code></pre><p>We&#39;ll brute force those in the <a href="../tips_and_tricks/cracking_hashes.html">tips and tricks section</a>. For now, let&#39;s crank up the difficulty and move on to seeing what else we can find.</p>
+<h2 id="medium">Medium</h2>
+<pre><code class="lang-php"><span class="hljs-variable">$id</span> = mysql_real_escape_string(<span class="hljs-variable">$id</span>);
 </code></pre>
+<p>Medium security adds a little sanitisation. <code>mysql_real_escape_string</code> will convert all instances of <code>&#39;</code> in the passed in value to <code>\&#39;</code>. Any injection strings containing an apostrophe will be broken. However, the initial query does not pad <code>$id</code>, so our injection still works. More complex injections specifying strings are likely to fail.</p>
+<p>(Further reading: <a href="http://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string" target="_blank">http://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string</a>)</p>
+
                     
                     </section>
                 
