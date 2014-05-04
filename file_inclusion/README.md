@@ -49,3 +49,17 @@ still works! The str_replace only does one pass, so once the first is removed, t
 ```
 
 Muahaha.
+
+## High
+
+```php
+$file = $_GET['page']; //The page we wish to display 
+
+// Only allow include.php
+if ( $file != "include.php" ) {
+    echo "ERROR: File not found!";
+    exit;
+}
+```
+
+Finally, they're using a whitelist. A very short whitelist. That brings our file inclusion hijinks to an end.
