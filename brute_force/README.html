@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="2" data-basepath=".." data-revision="1399202846735">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="2" data-basepath=".." data-revision="1399202991464">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -234,7 +234,7 @@
 </code></pre><p>Well alright, that gives us something to work with. Before diving in, take a while to familiarise yourself with <a href="http://portswigger.net/burp/help/intruder.html" target="_blank">Burp Intruder</a>, which is what I used. </p>
 <p>For now we&#39;ll keep it simple. Try to log in with the username <code>admin</code> and password <code>admin</code>. We&#39;re not lucky enough for that to be correct, so take a look at the <code>HTTP History</code> subsection of the <code>Proxy</code> tab. You should be able to find the GET request to    <code>/dvwa/vulnerabilities/brute/?username=whatever&amp;password=whatever&amp;Login=Login</code>. Right click on it, and select <code>Send to Intruder</code>.</p>
 <p>We&#39;ll keep it simple and attempt to brute force the password for the <code>admin</code> user.</p>
-<p>Remove all payload positions except for the <code>password</code> parameter in the GET request. On the payloads tab, under <code>Payload Options</code>, you can import your password list. I have provided one for this web app. You can find it <a href="../files/passwords.txt">here</a>.</p>
+<p>Remove all payload positions except for the <code>password</code> parameter in the GET request. On the payloads tab, under <code>Payload Options</code>, you can import your password list. I have provided one for this web app. You can find it <a href="files/passwords.txt">here</a>.</p>
 <p>Now that we&#39;ve loaded our password list into Burp and set the payload position, selecting <code>Intruder -&gt; Start attack</code> on the top menu will open the attack window and begin sending requests.</p>
 <p>This is great, but all we have is a bunch of requests. It&#39;s not immediately clear which request, if any, gets us any closer to having access. Under the options, we can add keywords to flag any response containing that response. Since we know an incorrect login attempt will spit out &quot;Username and/or password incorrect.&quot; we can add &quot;incorrect&quot; to the list.</p>
 <h2 id="low">Low</h2>
