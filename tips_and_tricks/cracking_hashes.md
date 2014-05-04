@@ -40,3 +40,7 @@ gordonb:abc123
 pablo:letmein
 smithy:password
 ```
+
+## The Proper Way
+
+We won't always be so lucky as to have easily googleable password hashes. I will use hashcat to break these the hard way!
