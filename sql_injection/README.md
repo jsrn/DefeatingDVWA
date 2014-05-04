@@ -7,12 +7,10 @@ Despite being a very well understood class of attack, SQL injection vulnerabilit
 The relevant chunk from the source code of the low security SQLi challenge:
 
 ```php
-<?php    
 $id = $_GET['id'];
 
 $getid = "SELECT first_name, last_name FROM users WHERE user_id = '$id'";
 $result = mysql_query($getid) or die('<pre>' . mysql_error() . '</pre>' );
-?>
 ```
 
 With no sanitisation on the value, it's pretty clear that `$id` is our point of injection.
@@ -63,3 +61,14 @@ pablo:0d107d09f5bbe40cade3de5c71e9e9b7
 smithy:5f4dcc3b5aa765d61d8327deb882cf99
 ```
 
+We'll brute force those in the [tips and tricks section](../tips_and_tricks/cracking_hashes.md). For now, let's crank up the difficulty and move on to seeing what else we can find.
+
+## Medium
+
+```php
+$id = mysql_real_escape_string($id);
+```
+
+Medium security adds a little sanitisation. `mysql_real_escape_string` will convert all instances of `'` in the passed in value to `\'`. Any injection strings containing an apostrophe will be broken. However, the initial query does not pad `$id`, so our injection still works. More complex injections specifying strings are likely to fail.
+
+(Further reading: http://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string)
