@@ -75,7 +75,3 @@ help
 index.php
 source
 ```
-
-## High
-
-*My kung fu is weak...*
