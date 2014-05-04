@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
         
         <meta charset="UTF-8">
-        <title>Burp Intruder | Defeating DVWA</title>
+        <title>Cracking Password Hashes | Defeating DVWA</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -13,13 +13,11 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="../tips_and_tricks/cracking_hashes.html" />
         
-        
-        <link rel="prev" href="../tips_and_tricks/README.html" />
+        <link rel="prev" href="../tips_and_tricks/burp_intruder.html" />
         
 
-        <meta property="og:title" content="Burp Intruder | Defeating DVWA">
+        <meta property="og:title" content="Cracking Password Hashes | Defeating DVWA">
         <meta property="og:site_name" content="Defeating DVWA">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -42,7 +40,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4.1" data-basepath=".." data-revision="1399198289582">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4.2" data-basepath=".." data-revision="1399198289582">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -120,7 +118,7 @@
 
         
         <li>
-            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/tips_and_tricks/burp_intruder.md" target="blank">Edit and Contribute</a>
+            <a href="https://github.com/jsrn/DefeatingDVWA/edit/master/tips_and_tricks/cracking_hashes.md" target="blank">Edit and Contribute</a>
         </li>
         
 
@@ -203,7 +201,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 83.33333333333333%;min-width: 66.66666666666667%;"></div>
+        <div class="inner" style="width: 100%;min-width: 83.33333333333333%;"></div>
     </div>
     <div class="chapters">
     
@@ -219,17 +217,23 @@
     
         <a href="../tips_and_tricks/burp_intruder.html" title="Burp Intruder" class="chapter done " data-progress="4.1" style="left: 83.33333333333333%;"></a>
     
-        <a href="../tips_and_tricks/cracking_hashes.html" title="Cracking Password Hashes" class="chapter  " data-progress="4.2" style="left: 100%;"></a>
+        <a href="../tips_and_tricks/cracking_hashes.html" title="Cracking Password Hashes" class="chapter done " data-progress="4.2" style="left: 100%;"></a>
     
     </div>
 </div>
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_6">
+                    <section class="normal" id="section-gitbook_7">
                     
-                        <h1 id="burp-intruder">Burp Intruder</h1>
-<h2 id="brute-forcing-with-burp-intruder">Brute Forcing with Burp Intruder</h2>
+                        <h1 id="cracking-password-hashes">Cracking Password Hashes</h1>
+<p>In the SQLi section of DVWA we were able to retrieve a set of password hashes.</p>
+<pre><code>admin:5f4dcc3b5aa765d61d8327deb882cf99
+gordonb:e99a18c428cb38d5f260853678922e03
+1337:8d3533d75ae2c3966d7e0d4fcc69216b
+pablo:0d107d09f5bbe40cade3de5c71e9e9b7
+smithy:5f4dcc3b5aa765d61d8327deb882cf99
+</code></pre><p>In this section, we&#39;ll see about cracking them to find the associated passwords.</p>
 
                     
                     </section>
@@ -239,10 +243,8 @@
         </div>
 
         
-        <a href="../tips_and_tricks/README.html" class="navigation navigation-prev "><i class="fa fa-angle-left"></i></a>
+        <a href="../tips_and_tricks/burp_intruder.html" class="navigation navigation-prev navigation-unique"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../tips_and_tricks/cracking_hashes.html" class="navigation navigation-next "><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
