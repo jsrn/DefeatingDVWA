@@ -40,7 +40,7 @@
 
 
         
-    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4.2" data-basepath=".." data-revision="1399200557647">
+    <div class="book" data-github="jsrn/DefeatingDVWA" data-level="4.2" data-basepath=".." data-revision="1399201330377">
     <div class="book-header">
     <!-- Actions Left -->
     
@@ -233,8 +233,26 @@ gordonb:e99a18c428cb38d5f260853678922e03
 1337:8d3533d75ae2c3966d7e0d4fcc69216b
 pablo:0d107d09f5bbe40cade3de5c71e9e9b7
 smithy:5f4dcc3b5aa765d61d8327deb882cf99
-</code></pre><p>In this section, we&#39;ll see about cracking them to find the associated passwords.</p>
-
+</code></pre><h2 id="the-lazy-way">The Lazy Way</h2>
+<p>If you&#39;re lucky enough to find a site that&#39;s still using unsalted md5 <strong>(in 2014? really?)</strong> to store passwords, there&#39;s reasonable chance that somebody else has already cracked that hash.</p>
+<p>A lot of the time, if you have a bunch of hashes to crack, you can usually just Google it!</p>
+<p><a href="http://www.md5rainbow.com/5f4dcc3b5aa765d61d8327deb882cf99" target="_blank">http://www.md5rainbow.com/5f4dcc3b5aa765d61d8327deb882cf99</a>
+... &quot;password&quot;</p>
+<p><a href="http://www.md5rainbow.com/e99a18c428cb38d5f260853678922e03" target="_blank">http://www.md5rainbow.com/e99a18c428cb38d5f260853678922e03</a>
+... &quot;abc123&quot;</p>
+<p><a href="http://www.md5rainbow.com/8d3533d75ae2c3966d7e0d4fcc69216b" target="_blank">http://www.md5rainbow.com/8d3533d75ae2c3966d7e0d4fcc69216b</a>
+... &quot;charley&quot;</p>
+<p><a href="http://www.md5rainbow.com/0d107d09f5bbe40cade3de5c71e9e9b7" target="_blank">http://www.md5rainbow.com/0d107d09f5bbe40cade3de5c71e9e9b7</a>
+... &quot;letmein&quot;</p>
+<p><a href="http://www.md5rainbow.com/5f4dcc3b5aa765d61d8327deb882cf99" target="_blank">http://www.md5rainbow.com/5f4dcc3b5aa765d61d8327deb882cf99</a>
+... we&#39;ve done this before. It&#39;s &quot;password&quot; again!</p>
+<p>Thanks to the magic of people using awful passwords, we obtained all of the passwords with minimal effort.</p>
+<pre><code>admin:password
+gordonb:abc123
+1337:charley
+pablo:letmein
+smithy:password
+</code></pre>
                     
                     </section>
                 
