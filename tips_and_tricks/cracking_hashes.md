@@ -55,7 +55,7 @@ e99a18c428cb38d5f260853678922e03
 ```
 
 ```
- ~/hashes  $ hashcat -m 0 hashes.txt passwords.txt
+ ~  $ hashcat hashes.txt passwords.txt
 Initializing hashcat v0.47 by atom with 8 threads and 32mb segment-size...
 
 Added hashes from file hashes.txt: 5 (1 salts)
