@@ -44,3 +44,35 @@ smithy:password
 ## The Proper Way
 
 We won't always be so lucky as to have easily googleable password hashes. I will use hashcat to break these the hard way!
+
+hashes.txt
+```
+5f4dcc3b5aa765d61d8327deb882cf99
+e99a18c428cb38d5f260853678922e03
+8d3533d75ae2c3966d7e0d4fcc69216b
+0d107d09f5bbe40cade3de5c71e9e9b7
+5f4dcc3b5aa765d61d8327deb882cf99
+```
+
+```
+ ~/hashes  $ hashcat -m 0 hashes.txt passwords.txt
+Initializing hashcat v0.47 by atom with 8 threads and 32mb segment-size...
+
+Added hashes from file hashes.txt: 5 (1 salts)
+
+NOTE: press enter for status-screen
+
+5f4dcc3b5aa765d61d8327deb882cf99:password
+
+Input.Mode: Dict (passwords.txt)
+Index.....: 1/1 (segment), 26 (words), 194 (bytes)
+Recovered.: 1/5 hashes, 0/1 salts
+Speed/sec.: - plains, - words
+Progress..: 26/26 (100.00%)
+Running...: --:--:--:--
+Estimated.: --:--:--:--
+
+Started: Mon May  5 11:05:12 2014
+Stopped: Mon May  5 11:05:12 2014
+```
+
